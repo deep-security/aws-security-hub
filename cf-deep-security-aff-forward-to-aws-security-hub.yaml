@@ -3,11 +3,11 @@ Description: 'Create cross-account role for sending findings to AWS Security Hub
 Metadata:
   Version: 0.7
 Parameters:
-  SourceAccountId:
+  TargetHubAccountId:
     Type: String
     MaxLength: 12
     MinLength: 12
-    Description: AWS Account ID (12 digits) of the account that is sending events to AWS Security on this accounts behalf
+    Description: AWS Account ID (12 digits) of the account where AWS Security Hub is receiving findings
 Resources:
   AssumeRole:
     Type: AWS::IAM::Role
@@ -28,7 +28,7 @@ Resources:
         Statement:
         - Effect: Allow
           Principal: 
-            "AWS": !Join [ "", [ "arn:aws:iam::", !Ref SourceAccountId, ":root" ] ]
+            "AWS": !Join [ "", [ "arn:aws:iam::", !Ref TargetHubAccountId, ":root" ] ]
           Action:
           - sts:AssumeRole
           Condition:

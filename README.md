@@ -1,7 +1,5 @@
 # AWS Security Hub Integration
 
-aws configure add-model --service-model file://securityhub-2018-10-26.normal.json --service-name securityhub
-
 AWS Security Hub provides a comprehensive view of your high priority security alerts and compliance status for your AWS deployment. By combining data from [Amazon GuardDuty](https://aws.amazon.com/guardduty/), [Amazon Inspector](https://aws.amazon.com/inspector/), and [Amazon Macie](https://aws.amazon.com/macie/) along with a host of [APN partner solutions](https://aws.amazon.com/security/partner-solutions/), the AWS Security Hub is a one-stop shop for security visibility.
 
 Each data source provides various findings relevant to the tool. Amazon Macie will send findings related to data within Amazon S3 buckets it monitors, Amazon GuardDuty will provide findings based on the assessments it runs on your Amazon EC2 Instances, and so forth.
@@ -36,6 +34,25 @@ The code requires the following permissions to run;
 
 - read access to the target Amazon SNS topic that Deep Security is sending events to
 - write access to the AWS Security Hub API, specifically the ImportFindings function calls
+
+### Configuring AWS IAM Permissions
+
+Deep Security allows you to setup multiple AWS accounts under one installation. This means that events information from multiple AWS accounts may be flowing to one centralized AWS Security Hub.
+
+This is typically the desired result.
+
+**But** in order to prevent spoofing of findings, AWS Security Hub restricts source accounts. By default, you cannot send events from account B to the AWS Security Hub in account A.
+
+In order to enable this functionality, the integration supports assuming an IAM role in account B when called from account A.
+
+That creates a workflow of;
+
+- account A hosts the integration function for AWS Lambda
+- account A's function receives an event flagged as account B
+- the integration function assumes a role in account B
+- the integration function then sends the event as a finding from account B to the AWS Security Hub in account A
+
+In order to simplify the creation of this role, we've provided an Amazon CloudFormation template in the repo. This template should be run in account B with the parameter of *TargetHubAccountId* set to account A.
 
 ## Findings
 
