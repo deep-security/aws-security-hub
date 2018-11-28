@@ -21,13 +21,13 @@ This integration only uses a subset of Deep Security events. Essentially only se
 
 AWS Security Hub is available as an open preview. Simply access the service from the AWS Management Console and click "Enable Security Hub".
 
-![Enable AWS Security Hub](enable-security-hub.png)
+![Enable AWS Security Hub](docs/enable-security-hub.png)
 
 This will walk you through the initial process of setting up the required permissions and structures to support the AWS Security Hub. 
 
 Once that initial step is complete, you need to subscribe to Trend Micro's Deep Security in order to permit the service to receive events from your Deep Security installation.
 
-![Subscribe to Trend Micro:Deep Security](subscribe-to-deep-security.png)
+![Subscribe to Trend Micro:Deep Security](docs/subscribe-to-deep-security.png)
 
 ## 3. Configure The AWS Lambda Function
 
