@@ -1,3 +1,7 @@
+> AWS Security Hub is currently in open preview. That means we can expect changes as the AWS service team responds to customer requirements and requests. We'll also be iterating on this integration in order to make it work better and deploy smoother.
+>
+> Please feel free to open an issue or submit a PR as required.
+
 # AWS Security Hub Integration
 
 AWS Security Hub provides a comprehensive view of your high priority security alerts and compliance status for your AWS deployment. By combining data from [Amazon GuardDuty](https://aws.amazon.com/guardduty/), [Amazon Inspector](https://aws.amazon.com/inspector/), and [Amazon Macie](https://aws.amazon.com/macie/) along with a host of [APN partner solutions](https://aws.amazon.com/security/partner-solutions/), the AWS Security Hub is a one-stop shop for security visibility.
