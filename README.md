@@ -15,7 +15,6 @@ The design is as follows;
 ![Deep Security and AWS Security Hub integration](docs/ds-ash-integration-design.jpg)
 
 
-
 ## Deployment
 
 ### Configure Deep Security To Send Events To Amazon SNS
@@ -30,7 +29,15 @@ This integration only uses a subset of Deep Security events. Essentially only se
 
 ### Configure AWS Security Hub
 
-...
+AWS Security Hub is available as an open preview. Simply access the service from the AWS Management Console and click "Enable Security Hub".
+
+![Enable AWS Security Hub](enable-security-hub.png)
+
+This will walk you through the initial process of setting up the required permissions and structures to support the AWS Security Hub. 
+
+Once that initial step is complete, you need to subscribe to Trend Micro's Deep Security in order to permit the service to receive events from your Deep Security installation.
+
+![Subscribe to Trend Micro:Deep Security](subscribe-to-deep-security.png)
 
 ### Configure The AWS Lambda Function
 
