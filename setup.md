@@ -1,3 +1,5 @@
+> This document details the setup steps for the integration of Deep Security and AWS Security Hub. For the full context of the integration and other important information, please [refer to the README](README.md).
+
 # Setting Up The Integration With Deep Security
 
 Setting up the integration involves 4 steps;
