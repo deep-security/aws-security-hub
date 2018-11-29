@@ -10,6 +10,13 @@ Each data source provides various findings relevant to the tool. Amazon Macie wi
 
 This repository contains AWS Lambda scripts to supply data from **your** Deep Security install to AWS Security Hub.
 
+## Table of Contents
+
+* [Design](#design)
+* [Findings](#findings)
+* [Support](#support)
+* [Contribute](#contribute)
+
 ## Design
 
 Deep Security has long had a feature to send events to an Amazon SNS topic. This integration takes advantage of that feature to filter and convert specific events in order to send them as findings to the AWS Security Hub.
