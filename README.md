@@ -97,3 +97,27 @@ In order to properly select events to send to the AWS Security Hub, this integra
 - *RepeatCount* is used in firewall events. In order to /reduce/ the volume of firewall events sent upstream, this property is used to select events when the count is higher than 5
 
 > This is the first level integration. As the AWS Security Hub evolves, more events will be sent upstream in order to help optimize the user experience.
+
+## Support
+
+This is an Open Source community project. Project contributors may be able to help, 
+depending on their time and availability. Please be specific about what you're 
+trying to do, your system, and steps to reproduce the problem.
+
+For bug reports or feature requests, please 
+[open an issue](https://github.com/deep-security/serverless-kms-grants/issues). 
+You are welcome to [contribute](#contribute).
+
+Official support from Trend Micro is not available. Individual contributors may be 
+Trend Micro employees, but are not official support.
+
+## Contribute
+
+We accept contributions from the community. To submit changes:
+
+1. Fork this repository.
+1. Create a new feature branch.
+1. Make your changes.
+1. Submit a pull request with an explanation of your changes or additions.
+
+We will review and work with you to release the code.
