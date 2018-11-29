@@ -1,35 +1,35 @@
-> AWS Security Hub is currently in open preview. That means we can expect changes as the AWS service team responds to customer requirements and requests. We'll also be iterating on this integration in order to make it work better and deploy smoother.
+> AWS Security Hub is currently in open preview. That means we can expect changes as the AWS service team responds to customer requirements and requests. We'll also be iterating on this integration in order to make it work better and deploy more smoothly.
 >
 > Please feel free to open an issue or submit a PR as required.
 
-# AWS Security Hub Integration
+# AWS Security Hub Integration for Deep Security Manager
 
 AWS Security Hub provides a comprehensive view of your high priority security alerts and compliance status for your AWS deployment. By combining data from [Amazon GuardDuty](https://aws.amazon.com/guardduty/), [Amazon Inspector](https://aws.amazon.com/inspector/), and [Amazon Macie](https://aws.amazon.com/macie/) along with a host of [APN partner solutions](https://aws.amazon.com/security/partner-solutions/), the AWS Security Hub is a one-stop shop for security visibility.
 
 Each data source provides various findings relevant to the tool. Amazon Macie will send findings related to data within Amazon S3 buckets it monitors, Amazon GuardDuty will provide findings based on the assessments it runs on your Amazon EC2 Instances, and so forth.
 
-This repository contains the code required to supply data from **your** Deep Security install to AWS Security Hub.
+This repository contains AWS Lambda scripts to supply data from **your** Deep Security install to AWS Security Hub.
 
 ## Design
 
 Deep Security has long had a feature to send events to an Amazon SNS topic. This integration takes advantage of that feature to filter and convert specific events in order to send them as findings to the AWS Security Hub.
 
-The design is as follows;
+The design is:
 
 ![Deep Security and AWS Security Hub integration](docs/ds-ash-integration-design.jpg)
 
 
 ## Deployment
 
-### Configure Deep Security To Send Events To Amazon SNS
+### Configure Deep Security to Send Events to Amazon SNS
 
-The configuration to send all Deep Security events to Amazon SNS is very simple. It's [detailed here](https://help.deepsecurity.trendmicro.com/sns.html) in the Deep Security Help Center. In lieu of copying those steps here, please refer to the Help Center, that will always be up to date.
+To configure Deep Security Manager to send all events to Amazon SNS, follow the steps in the [Deep Security Help Center](https://help.deepsecurity.trendmicro.com/sns.html).
 
-By default, this configuration sends all Deep Security events to the specified Amazon SNS topic. You can [filter what events are sent](https://help.deepsecurity.trendmicro.com/Events-Alerts/sns-json-config.html?Highlight=sns) using a simple JSON policy language (very similar to AWS IAM).
+By default, this configuration sends all Deep Security events to the specified Amazon SNS topic. You can [filter what events are sent](https://help.deepsecurity.trendmicro.com/Events-Alerts/sns-json-config.html) using a simple JSON policy language (very similar to AWS IAM).
 
 This integration only uses a subset of Deep Security events. Essentially only sending critical and high severity events to AWS Security Hub by default. This class of events is more closely related to the core concept of an AWS Security Hub finding.
 
-**Caution:** if you use the Deep Security event policy language to prevent relevant events from being sent to an Amazon SNS topic, those events won't show up in the AWS Security Hub. This is unlikely to happen but something to be aware of if you're filtering the event stream outbound from your Deep Security installation.
+**Caution:** If you use the Deep Security event policy language to prevent sending relevant events to an Amazon SNS topic, those events won't show up in the AWS Security Hub. This is unlikely to happen but something to be aware of if you're filtering the event stream outbound from your Deep Security installation.
 
 ### Configure AWS Security Hub
 
@@ -43,11 +43,11 @@ Once that initial step is complete, you need to subscribe to Trend Micro's Deep 
 
 ![Subscribe to Trend Micro:Deep Security](docs/subscribe-to-deep-security.png)
 
-### Configure The AWS Lambda Function
+### Configure the AWS Lambda Function
 
 Using the CloudFormation template in this repository, you can easily deploy the required AWS Lambda function and assign the proper permissions via the AWS IAM execution role.
 
-The code requires the following permissions to run;
+The code requires these permissions to run:
 
 - read access to the target Amazon SNS topic that Deep Security is sending events to
 - write access to the AWS Security Hub API, specifically the ImportFindings function calls
@@ -62,18 +62,18 @@ This is typically the desired result.
 
 In order to enable this functionality, the integration supports assuming an IAM role in account B when called from account A.
 
-That creates a work flow of;
+That creates a work flow of:
 
 - account A hosts the integration function for AWS Lambda
 - account A's function receives an event flagged as account B
 - the integration function assumes a role in account B
 - the integration function then sends the event as a finding from account B to the AWS Security Hub in account A
 
-In order to simplify the creation of this role, we've [provided an Amazon CloudFormation template](cf-deep-security-aff-forward-to-aws-security-hub.yaml) in the repo. This template should be run in account B with the parameter of *TargetHubAccountId* set to account A.
+In order to simplify the creation of this role, we've [provided an Amazon CloudFormation template](cf-deep-security-aff-forward-to-aws-security-hub.yaml) in the repository. This template should be run in account B with the parameter of *TargetHubAccountId* set to account A.
 
 ## Findings
 
-Deep Security uses the following core event types:
+Deep Security uses these core event types:
 
 - *SystemEvent* - Generated by Deep Security as a platform. Includes events like agent updates, communication issues, etc.
 - *PacketLog* - Generated by the firewall control. Possible events include, packet denied, communication permitted, and others
@@ -88,7 +88,7 @@ Each of these event types has different properties that contain details relevant
 
 There are common identifying properties for all event types (Deep Security TenantID, timestamp, etc.) and some similarities even if the structure is a bit different.
 
-In order to properly select events to send to the AWS Security Hub, this integration uses the following logic;
+In order to properly select events to send to the AWS Security Hub, this integration uses this logic:
 
 - *Severity* for intrusion prevention and integrity monitoring events. This property uses a simple scale of 1—4 with 4 being "critical". Events that are a 3 or a 4 are automatically sent to AWS Security Hub
 - *Risk* for web reputation events. Any event tagged as a 3 (suspicious) or 4 (dangerous) will automatically be sent to AWS Security Hub
