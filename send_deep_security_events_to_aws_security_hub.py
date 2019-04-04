@@ -337,10 +337,11 @@ def lambda_handler(event, context):
 	# 3. Evaluate the event for security importance
 	# 4. Convert selected events to the Amazon Finding Format (AFF)
 	# 5. Send select events (in AFF) to the AWS Security Hub
+	total_events = 0
+	forwarded_events = 0	
+	
 	if 'Records' in event:
 		# 1. Verify that this is an event from an Amazon SNS topic
-		total_events = 0
-		forwarded_events = 0
 		for e in event['Records']:
 			if 'EventSource' in e and e['EventSource'] == 'aws:sns':
 				print("Amazon SNS message received")
